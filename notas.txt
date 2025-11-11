@@ -1,0 +1,27 @@
+campo DateTimeField para guardar la última conexión
+on_delete=models.CASCADE --> añadir relación de borrado de campos!! (OneToMany)
+
+crear app de session
+
+modular las entidades de la BD en distintas apps del proyecto
+
+Parte de pilates:
+- users
+- classes (servicio ofrecido)
+- booking (reservas)
+- ads (ofertas) 
+- horario
+- centro
+- bonos
+
+- common (carpeta con funciones comunes, como los utiles para validar un email)
+- pagos
+
+Parte de merch: (VERSIONES FUTURAS)
+- pedidos
+
+(AÑADIR SISTEMA DE RECOMPENSAS como starbucks)
+Parte de café/stock:
+- carta
+- stock
+- proveedores
