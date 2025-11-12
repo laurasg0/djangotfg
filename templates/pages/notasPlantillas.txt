@@ -1,0 +1,17 @@
+BASE: el main del html
+HEADER Y FOOTER: se incluyen en el BASE
+
+OTRAS TEMPLATES:
+
+HOME: página principal. Se añade la base.html
+    con el extends se añade el contenido de home a la base.html pero se queda el contenido con el nombre de home
+    lo mismo si fuese la página de usuarios, se añadiría el contenido del usuario al de home pero se guarda en el de users para mostrarlo
+    se indica con el block content
+
+    Sintaxis:
+
+    {% extends 'pages/base.html' %}
+
+    {% block content %}
+
+    {% endblock %}
