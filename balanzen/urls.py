@@ -18,12 +18,13 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from common import views as v_common # Importamos las vistas de common
+from common import views # Importamos las vistas de common
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # añadir siempre el nombre para poder llamarlo
     path('', views.HomeView.as_view(), name='home'), # VISTA PRINCIPAL AL ABRIR LA PÁGINA (view en common)
+    path('login/', views.HomeView.as_view(), name='log in')
 ]
 
 if settings.DEBUG:
