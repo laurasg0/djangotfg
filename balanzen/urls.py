@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # añadir siempre el nombre para poder llamarlo
     path('', views.HomeView.as_view(), name='home'), # VISTA PRINCIPAL AL ABRIR LA PÁGINA (view en common)
-    path('login/', views.HomeView.as_view(), name='log in')
+    path('login/', views.LoginView.as_view(), name='log in')
 ]
 
 if settings.DEBUG:

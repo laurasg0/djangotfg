@@ -4,4 +4,6 @@ from django.views.generic import TemplateView # Import para las vistas y Para CB
 # Create your views here.
 class HomeView(TemplateView):
     template_name = 'pages/home.html' # ruta a la plantilla
+
+class LoginView(TemplateView):
     template_name ='pages/login.html' # ruta al login
