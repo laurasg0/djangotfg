@@ -81,8 +81,14 @@ WSGI_APPLICATION = 'balanzen.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql', # Busca las librerias para usar PostgreSQL
+        'NAME': 'balanzen',
+        'USER': 'laura',
+        'PASSWORD': 'laura',
+        'HOST': 'localhost',    # Nombre del servicio en docker-compose (contenedor)
+        'PORT': '5432',         # Puerto por defecto de PostgreSQL
     }
 }
 

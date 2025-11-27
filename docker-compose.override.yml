@@ -1,0 +1,6 @@
+# le decimos al srv si estamos en dev o prod
+services:
+  web:
+    command: sh /code/scripts_docker/dev/run_web.sh # cambiar ruta
+    environment:
+      - ENVIRONMENT=development
