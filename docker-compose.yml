@@ -4,5 +4,29 @@ services:
     ports:
       - "81:8000"
     volumes:
-      -  ./ProyBalanzen/:/code
+      - ./ProyBalanzen:/code
+      - ./scripts_docker:/scripts_docker
+    depends_on:
+      - db
+    environment:
+      DATABASE_HOST: db
+      DATABASE_NAME: balanzen
+      DATABASE_USER: laura
+      DATABASE_PASSWORD: laura
+
+  db:
+    image: postgres:15
+    container_name: contbdpostgres
+    environment:
+      POSTGRES_USER: laura
+      POSTGRES_PASSWORD: laura
+      POSTGRES_DB: balanzen
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  postgres_data:
     

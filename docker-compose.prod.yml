@@ -1,6 +1,6 @@
-services: # indicamos que estamos en prod
+services:
   web:
-    command: sh /code/scripts_docker/prod/run_web.sh # se puede cambiar la ruta para dejar la carpeta fuera del proyecto
+    command: sh /scripts_docker/prod/run_web.sh 
     environment:
     - ENVIRONMENT=production
 

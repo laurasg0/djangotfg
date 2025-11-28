@@ -24,8 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-d7to5w)*l=ppqzykzy%eq)--x#^kmfjq%qx^*di=+n&$@o=pe0'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+environment_variable = os.getenv('ENVIRONMENT', 'development')
 
 ALLOWED_HOSTS = []
 
@@ -81,16 +80,24 @@ WSGI_APPLICATION = 'balanzen.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql', # Busca las librerias para usar PostgreSQL
         'NAME': 'balanzen',
         'USER': 'laura',
         'PASSWORD': 'laura',
-        'HOST': 'localhost',    # Nombre del servicio en docker-compose (contenedor)
+        'HOST': 'db',    # Nombre del servicio en docker-compose (contenedor)
         'PORT': '5432',         # Puerto por defecto de PostgreSQL
     }
 }
+
+if environment_variable == 'development':
+  DEBUG = True
+  ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+if environment_variable == 'production':
+  DEBUG = False
+  ALLOWED_HOSTS = ['*']  # Cambiar por el dominio real en producción (prod.localhost)
 
 
 # Password validation
