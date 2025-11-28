@@ -1,14 +1,15 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.utils.timezone import now
+from django.utils import timezone
 
-# TODO: cambiar y extender de AbstractUser
-class User(models.Model):
+
+class User(AbstractUser):
 
     class Gender(models.TextChoices):
         MUJER = 'MUJER', 'Mujer'
         HOMBRE = 'HOMBRE', 'Hombre'
         OTRO = 'OTRO', 'Otro'
-    
+
     class Role(models.TextChoices):
         ADMIN = 'ADMIN', 'Admin'
         TRABAJADOR = 'TRABAJADOR', 'Trabajador'
@@ -18,34 +19,36 @@ class User(models.Model):
         PLATA = 'PLATA', 'Plata'
         ORO = 'ORO', 'Oro'
         PLATINO = 'PLATINO', 'Platino'
-        
-    
-    name = models.CharField(max_length=50, verbose_name='Nombre', null=False, blank=False)
-    surname = models.CharField(max_length=150, verbose_name='Apellidos', null=False, blank=False)
-    email = models.EmailField(max_length=300, verbose_name='Correo Electrónico', null=False, blank=False, unique=True)
-    password = models.CharField(max_length=50, verbose_name='Contraseña', null=False, blank=False)
-    phone = models.CharField(max_length=20, verbose_name='Teléfono', null=False, blank=False)
-    birthdate = models.DateField(verbose_name= 'Fecha de Nacimiento', blank=True, null = True, default=None)
-    gender = models.CharField(max_length=10, choices=Gender.choices, verbose_name='Género', default=None, null = True)
-    role = models.CharField(max_length=10, choices=Role.choices, verbose_name='Rol', default=Role.CLIENTE)
-    register_date = models.DateTimeField(verbose_name='Fecha de Registro', default=now, null=False, blank=False)
-    reward_points = models.IntegerField(verbose_name='Balanzen Points', default=0, null=False, blank=False)
-    membership_level = models.CharField(max_length=10, choices=Membership.choices, default=Membership.PLATA, null=False, blank=False)
-    last_connection = models.DateTimeField(null=True, blank=True)
-    
+
+    # Campos adicionales
+    name = models.CharField(max_length=50, verbose_name='Nombre')
+    surname = models.CharField(max_length=150, verbose_name='Apellidos')
+    phone = models.CharField(max_length=20, verbose_name='Teléfono')
+    birthdate = models.DateField(verbose_name='Fecha de Nacimiento', blank=True, null=True)
+    gender = models.CharField(max_length=10, choices=Gender.choices, default=None, null=True)
+    role = models.CharField(max_length=15, choices=Role.choices, default=Role.CLIENTE)
+    reward_points = models.IntegerField(default=0)
+    membership_level = models.CharField(max_length=10, choices=Membership.choices, default=Membership.PLATA)
+
+    # Modificación del email
+    email = models.EmailField(unique=True)
+
+    # El AbstractUser ya trae: password hasheado, username, is_staff, etc.
+
     def __str__(self):
-        return f"{self.name} {self.surname}"
-    
-# 1:M Un usuario puede tener una o más sesiones 
+        return f"{self.username} - {self.email}"
+
 
 class UserSession(models.Model):
     token_session = models.CharField(max_length=255, unique=True)
-    start_date = models.DateTimeField(default=now)
+    start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(null=True, blank=True)
-    id_user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='sessions'
-    )
+    last_connection = models.DateTimeField(null=True, blank=True)
+    id_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sessions')
 
-# crear app de session1
+    def touch(self):
+        self.last_connection = timezone.now()
+        self.save(update_fields=['last_connection'])
+
+    def __str__(self):
+        return f"Session {self.pk} for {self.user.email}"

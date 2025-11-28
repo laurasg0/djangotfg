@@ -2,27 +2,32 @@ from django.db import models
 from django.utils.timezone import now
 
 # Modelo de clases con nombre y descripción
-class Classes(models.Model):
-    name = models.CharField(max_length=50, verbose_name='Clase', null=False, blank=False)
-    description = models.CharField(max_length=150, verbose_name='Descripción', null=False, blank=False)
+class ClassType(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Clase')
+    description = models.CharField(verbose_name='Descripción', null=False, blank=False)
     price = models.FloatField(verbose_name='Precio', null=False, blank=False)
-    # TODO: ID_CENTER FK
+    id_center = models.ForeignKey(
+        'centers.Center',
+        on_delete=models.CASCADE,
+        related_name='Centro'
+    )
 
     def __str__(self):
         return self.name
     
-# Modelo Turn (Reserva de clase por usuario)
-class Turn(models.Model):
-    date = models.DateField(verbose_name='Fecha', null=False, blank=False)
-    time = models.TimeField(verbose_name='Hora', null=False, blank=False)
-    capacity = models.IntegerField(verbose_name='Capacidad', null=False, blank=False)
-    id_user = models.ForeignKey(
-        'users.User',
+# Modelo ClassSession (solo define la sesión)
+class ClassSession(models.Model):
+    date = models.DateField(verbose_name="Fecha")
+    start_time = models.TimeField(verbose_name="Hora de inicio")
+    end_time = models.TimeField(verbose_name="Hora de fin")
+    max_capacity = models.IntegerField(verbose_name='Capacidad')
+    is_active = models.BooleanField(default=True, verbose_name="Sesión activa")
+
+    class_type = models.ForeignKey(
+        ClassType,
         on_delete=models.CASCADE,
-        related_name='turns'
+        related_name='sessions'
     )
-    id_class = models.ForeignKey(
-        Classes,
-        on_delete=models.CASCADE,
-        related_name='turns'
-    )
+
+    def __str__(self):
+        return f"{self.class_type.name} - {self.date} {self.start_time}"

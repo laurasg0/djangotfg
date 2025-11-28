@@ -17,6 +17,8 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+AUTH_USER_MODEL = 'users.User'  # Modelo de usuario usado en app 'users'
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -42,7 +44,8 @@ INSTALLED_APPS = [
     'common',
     'classes',
     'booking',
-    'ads'
+    'ads',
+    'centers'
 ]
 
 MIDDLEWARE = [
@@ -97,7 +100,7 @@ if environment_variable == 'development':
 
 if environment_variable == 'production':
   DEBUG = False
-  ALLOWED_HOSTS = ['*']  # Cambiar por el dominio real en producción (prod.localhost)
+  ALLOWED_HOSTS = ['prod.localhost']  # Cambiar por el dominio real en producción (prod.localhost)
 
 
 # Password validation
