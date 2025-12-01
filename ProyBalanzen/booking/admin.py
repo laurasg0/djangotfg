@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Booking
+from .models import Reserva
 
-@admin.register(Booking)
-class BookingAdmin(admin.ModelAdmin):
-    list_display = ('user', 'session', 'booked_at', 'is_active')
-    list_filter = ('is_active', 'booked_at')
-    search_fields = ('user__username', 'session__class_type__name')
+@admin.register(Reserva)
+class ReservaAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'sesion', 'fecha_reserva', 'activa')
+    list_filter = ('activa', 'fecha_reserva')
+    search_fields = ('usuario__username', 'sesion__tipo_clase__nombre')

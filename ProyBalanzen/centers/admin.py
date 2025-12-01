@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Center
+from .models import Centro
 
-@admin.register(Center)
-class CenterAdmin(admin.ModelAdmin):
-    list_display = ('name', 'address', 'phone')
-    search_fields = ('name', 'address')
+@admin.register(Centro)
+class CentroAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'direccion', 'telefono', 'email')  # Campos que se muestran en la lista del admin
+    search_fields = ('nombre', 'direccion')  # Campos por los que se puede buscar

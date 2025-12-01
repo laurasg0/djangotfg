@@ -1,21 +1,28 @@
 from django.db import models
-from django.conf import settings    # Importa la configuración del proyecto para usar el modelo de usuario
-from classes.models import ClassSession
+from django.conf import settings
+from classes.models import SesionClase
 
-class Booking(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,   # Referencia al modelo de usuario en settings.py
+class Reserva(models.Model):
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='Reservas')
-    session = models.ForeignKey(
-        ClassSession,
-        on_delete = models.CASCADE,
-        related_name = 'Reservas')
-    booked_at = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
+        related_name='reservas',
+        verbose_name='Usuario'
+    )
+    sesion = models.ForeignKey(
+        SesionClase,
+        on_delete=models.CASCADE,
+        related_name='reservas',
+        verbose_name='Sesión'
+    )
+    fecha_reserva = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de Reserva')
+    activa = models.BooleanField(default=True, verbose_name='Activa')
 
     class Meta:
-        unique_together = ('user', 'session') # Evita reservas duplicadas
+        unique_together = ('usuario', 'sesion')
+        verbose_name = 'Reserva'
+        verbose_name_plural = 'Reservas'
+        ordering = ['-fecha_reserva']  # Ordena por las reservas más recientes primero
 
     def __str__(self):
-        return f"Reserva de {self.user.username} para {self.session}"
+        return f"Reserva de {self.usuario.username} para {self.sesion}"

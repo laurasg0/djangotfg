@@ -1,20 +1,36 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, UserSession
+from .models import Usuario, SesionUsuario
 
-@admin.register(User)
-class UserAdmin(BaseUserAdmin):
-    list_display = ('username', 'email', 'name', 'surname', 'role', 'membership_level')
-    list_filter = ('role', 'membership_level', 'gender')
-    search_fields = ('username', 'email', 'name', 'surname')
+@admin.register(Usuario)
+class UsuarioAdmin(BaseUserAdmin):
+    list_display = ('username', 'email', 'nombre', 'apellidos', 'rol', 'nivel_membresia')  # Campos mostrados en la lista
+    list_filter = ('rol', 'nivel_membresia', 'genero')  # Filtros laterales
+    search_fields = ('username', 'email', 'nombre', 'apellidos')  # Campos de búsqueda
     
+    # Formulario para EDITAR usuarios existentes
     fieldsets = BaseUserAdmin.fieldsets + (
-        ('Información adicional', {'fields': ('name', 'surname', 'phone', 'birthdate', 'gender')}),
-        ('Rol y membresía', {'fields': ('role', 'reward_points', 'membership_level')}),
+        ('Información adicional', {'fields': ('nombre', 'apellidos', 'telefono', 'fecha_nacimiento', 'genero')}),
+        ('Rol y membresía', {'fields': ('rol', 'puntos_recompensa', 'nivel_membresia')}),
+    )
+    
+    # Formulario para CREAR nuevos usuarios
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'password1', 'password2'),  # Incluye email en creación
+        }),
+        ('Información adicional', {
+            'fields': ('nombre', 'apellidos', 'telefono', 'fecha_nacimiento', 'genero')
+        }),
+        ('Rol y membresía', {
+            'fields': ('rol', 'puntos_recompensa', 'nivel_membresia')
+        }),
     )
 
-@admin.register(UserSession)
-class UserSessionAdmin(admin.ModelAdmin):
-    list_display = ('id_user', 'token_session', 'start_date', 'last_connection', 'end_date')
-    list_filter = ('start_date',)
-    search_fields = ('id_user__username', 'token_session')
+@admin.register(SesionUsuario)
+class SesionUsuarioAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'token_sesion', 'fecha_inicio', 'ultima_conexion', 'fecha_fin')  # Campos mostrados en la lista
+    list_filter = ('fecha_inicio',)  # Filtros laterales
+    search_fields = ('usuario__username', 'token_sesion')  # Búsqueda por usuario y token
+    readonly_fields = ('fecha_inicio', 'ultima_conexion')  # Campos de solo lectura

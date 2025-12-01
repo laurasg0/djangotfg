@@ -1,13 +1,14 @@
 from django.contrib import admin
-from .models import ClassType, ClassSession
+from .models import TipoClase, SesionClase
 
-@admin.register(ClassType)
-class ClassTypeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'price', 'id_center')
-    search_fields = ('name',)
+@admin.register(TipoClase)
+class TipoClaseAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'descripcion', 'precio', 'centro')
+    search_fields = ('nombre',)
+    list_filter = ('centro',)
 
-@admin.register(ClassSession)
-class ClassSessionAdmin(admin.ModelAdmin):
-    list_display = ('class_type', 'date', 'start_time', 'end_time', 'max_capacity', 'is_active')
-    list_filter = ('is_active', 'date', 'class_type')
-    search_fields = ('class_type__name',)
+@admin.register(SesionClase)
+class SesionClaseAdmin(admin.ModelAdmin):
+    list_display = ('tipo_clase', 'fecha', 'hora_inicio', 'hora_fin', 'capacidad_maxima', 'activa')
+    list_filter = ('activa', 'fecha', 'tipo_clase')
+    search_fields = ('tipo_clase__nombre',)
