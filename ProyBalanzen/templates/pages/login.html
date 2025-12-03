@@ -1,14 +1,49 @@
-{% extends 'pages/base.html' %}
 
+{% extends 'pages/base.html' %}
+{% load static %
+
+}
 {% block content %}
 
 
-<form method="get">
-    <input type="text" name="q" placeholder="Buscar usuario..." value="{{request.GET.q}}">
+<main>
+      <div class="login-container">
+        <form class="login-box" action="">
+          <h2>Iniciar sesión</h2>
+          <div class="input-container">
+            <i class="material-icons input-icon">email</i>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Correo electrónico"
+            />
+          </div>
 
-    <input type="checkbox" name="marcado" value="False" {% if marcado=="True" %} checked {% endif %}> Marcado
-    <button type="submit">Enviar</button>
-</form>
+          <div class="input-container">
+            <i class="material-icons input-icon">lock</i>
+            <input
+              type="password"
+              name="clave"
+              id="clave"
+              placeholder="Contraseña"
+            />
+          </div>
+          <button type="submit">Entrar</button>
+          <div class="login-options">
+            <p>¿No tienes una cuenta? <a href="register.html">Regístrate</a></p>
+            <a href="{% url 'inicio_admin' %}">Admin</a>
+            <a href="{% url 'inicio_user' %}">Usuario</a>
+            <a href="{% url 'inicio_error' %}">Error</a>
+          </div>
+        </form>
+
+        <div class="login-content">
+          <h1>Balanzen</h1>
+          <p>Tu espacio de bienestar y equilibrio.</p>
+        </div>
+      </div>
+    </main>
 
 
 

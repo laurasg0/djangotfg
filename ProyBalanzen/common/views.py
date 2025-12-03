@@ -7,3 +7,12 @@ class HomeView(TemplateView):
 
 class LoginView(TemplateView):
     template_name ='pages/login.html' # ruta al login
+
+class AdminView(TemplateView):
+    template_name = 'pages/inicio_admin.html' # ruta a la plantilla del admin
+
+class UserView(TemplateView):
+    template_name = 'pages/inicio_user.html' # ruta a la plantilla del usuario
+
+class ErrorView(TemplateView):
+    template_name = 'pages/inicio_error.html' # ruta a la plantilla de error

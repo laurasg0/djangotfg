@@ -1,3 +1,18 @@
+{% load static %}
 <header>
-    <h1 class="text-align left">BALANZEN</h1>
-</header>
+      <a href="index.html" class="logo-nav">
+        <img
+          class="logo"
+          src="{% static 'assets/logos/logo_negro.svg' %}"
+          alt="Balanzen logo"
+        />
+      </a>
+      <nav class="header-nav">
+        <a href="index.html#cafe">Cafetería</a>
+        <a href="index.html#clases">Clases</a>
+        <a href="index.html#locales">Locales</a>
+        <a href="index.html#tienda">Tienda</a>
+        <button class="btn-login"><a id="btn-login" href="pages/login.html" >Iniciar sesión</a></button>
+        
+      </nav>
+    </header>

@@ -24,8 +24,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # añadir siempre el nombre para poder llamarlo
     path('', views.HomeView.as_view(), name='home'), # VISTA PRINCIPAL AL ABRIR LA PÁGINA (view en common)
-    path('login/', views.LoginView.as_view(), name='log in')
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('inicio_admin/', views.AdminView.as_view(), name='inicio_admin'),
+    path('inicio_user/', views.UserView.as_view(), name='inicio_user'),
+    path('inicio_error/', views.ErrorView.as_view(), name='inicio_error'),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

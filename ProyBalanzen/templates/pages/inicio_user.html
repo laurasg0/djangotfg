@@ -1,0 +1,179 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Layout con sidebar lateral -->
+<div class="admin-layout">
+    <!-- Sidebar izquierdo con navegación de usuario -->
+    <aside class="sidebar">
+        <nav class="sidebar-nav">
+            <h3 style="color:var(--blanco); margin-bottom:20px;">Mi Cuenta</h3>
+            <ul>
+                <li><a href="inicio_user.html" class="active">
+                        <span class="material-icons">home</span> Inicio
+                    </a></li>
+                <li><a href="#reservas">
+                        <span class="material-icons">event</span> Mis Reservas
+                    </a></li>
+                <li><a href="#nueva-reserva">
+                        <span class="material-icons">add_circle</span> Nueva Reserva
+                    </a></li>
+                <li><a href="#bono">
+                        <span class="material-icons">card_membership</span> Mi Bono
+                    </a></li>
+                <li><a href="#perfil">
+                        <span class="material-icons">settings</span> Configurar Perfil
+                    </a></li>
+                <li><a href="#historial">
+                        <span class="material-icons">history</span> Historial
+                    </a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Contenido principal del usuario -->
+    <main class="admin-content">
+        <!-- Título de bienvenida -->
+        <div class="page-title">
+            <h1>¡Hola, Laura! 👋</h1>
+            <p style="color:var(--gris); font-size:14px;">Bienvenida a tu panel personal</p>
+        </div>
+
+        <!-- Tarjetas de información del usuario -->
+        <section class="stats-grid">
+            <!-- Bono actual -->
+            <div class="stat-card">
+                <div class="stat-icon" style="background-color:#E8F5E9;">
+                    <span class="material-icons" style="color:var(--success);">card_membership</span>
+                </div>
+                <div class="stat-info">
+                    <h3>Mi Bono</h3>
+                    <p class="stat-number">8 clases</p>
+                    <span class="stat-badge success">Válido hasta 15/01/2026</span>
+                </div>
+            </div>
+
+            <!-- Próxima clase -->
+            <div class="stat-card">
+                <div class="stat-icon" style="background-color:#E3F2FD;">
+                    <span class="material-icons" style="color:#1976D2;">event_available</span>
+                </div>
+                <div class="stat-info">
+                    <h3>Próxima Clase</h3>
+                    <p class="stat-number">Mañana</p>
+                    <span class="stat-badge info">Pilates Reformer - 10:00</span>
+                </div>
+            </div>
+
+            <!-- Clases realizadas -->
+            <div class="stat-card">
+                <div class="stat-icon" style="background-color:#F3E5F5;">
+                    <span class="material-icons" style="color:#7B1FA2;">fitness_center</span>
+                </div>
+                <div class="stat-info">
+                    <h3>Clases Este Mes</h3>
+                    <p class="stat-number">12</p>
+                    <span class="stat-badge info">¡Sigue así!</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mis próximas reservas -->
+        <section class="content-section">
+            <div class="section-header">
+                <h2>Mis Próximas Reservas</h2>
+                <a href="#todas-reservas" class="btn-link">Ver todas</a>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Clase</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Local</th>
+                        <th>Instructor</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Pilates Reformer</td>
+                        <td>01/12/2025</td>
+                        <td>10:00</td>
+                        <td>Centro Andorra</td>
+                        <td>Ana Martín</td>
+                        <td><span class="badge success">Confirmada</span></td>
+                        <td>
+                            <button class="btn-icon" title="Ver detalles">
+                                <span class="material-icons">visibility</span>
+                            </button>
+                            <button class="btn-icon" title="Cancelar">
+                                <span class="material-icons">cancel</span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Pilates</td>
+                        <td>03/12/2025</td>
+                        <td>18:00</td>
+                        <td>Centro Andorra</td>
+                        <td>Carlos Ruiz</td>
+                        <td><span class="badge success">Confirmada</span></td>
+                        <td>
+                            <button class="btn-icon" title="Ver detalles">
+                                <span class="material-icons">visibility</span>
+                            </button>
+                            <button class="btn-icon" title="Cancelar">
+                                <span class="material-icons">cancel</span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Pilates Avanzado</td>
+                        <td>05/12/2025</td>
+                        <td>19:00</td>
+                        <td>Centro Andorra</td>
+                        <td>Laura Pérez</td>
+                        <td><span class="badge warning">Pendiente</span></td>
+                        <td>
+                            <button class="btn-icon" title="Ver detalles">
+                                <span class="material-icons">visibility</span>
+                            </button>
+                            <button class="btn-icon" title="Cancelar">
+                                <span class="material-icons">cancel</span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Acciones rápidas del usuario -->
+        <section class="quick-actions">
+            <h2 style="grid-column:1/-1; margin-bottom:10px;">Acciones Rápidas</h2>
+
+            <a href="#nueva-reserva" class="action-btn">
+                <span class="material-icons">add_circle</span>
+                <span>Reservar Clase</span>
+            </a>
+
+            <a href="#perfil" class="action-btn">
+                <span class="material-icons">person</span>
+                <span>Mi Perfil</span>
+            </a>
+
+            <a href="#comprar-bono" class="action-btn">
+                <span class="material-icons">shopping_cart</span>
+                <span>Comprar Bono</span>
+            </a>
+
+            <a href="#historial" class="action-btn">
+                <span class="material-icons">history</span>
+                <span>Ver Historial</span>
+            </a>
+        </section>
+    </main>
+</div>
+
+{% endblock %}

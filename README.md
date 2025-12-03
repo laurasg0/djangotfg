@@ -22,8 +22,6 @@ c. Meta en bookings (evita reservas duplicadas)
 # Actividad 4:
 
 
-
-
 # Levantar y migrar el proyecto
 # Levanta los contenedores
 docker-compose up -d

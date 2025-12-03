@@ -1,0 +1,57 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block content %}
+
+    <!-- Layout con sidebar lateral -->
+    <div class="admin-layout">
+        <!-- Sidebar izquierdo con navegación -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <h3 style="color:var(--blanco); margin-bottom:20px;">Menú</h3>
+                <ul>
+                    <li><a href="inicio_admin.html" class="active">
+                            <span class="material-icons">dashboard</span> Resumen
+                        </a></li>
+                    <li><a href="#reservas">
+                            <span class="material-icons">event</span> Reservas
+                        </a></li>
+                    <li><a href="#clases">
+                            <span class="material-icons">fitness_center</span> Clases
+                        </a></li>
+                    <li><a href="#usuarios">
+                            <span class="material-icons">people</span> Usuarios
+                        </a></li>
+                    <li><a href="#locales">
+                            <span class="material-icons">store</span> Locales
+                        </a></li>
+                    <li><a href="#Anuncios">
+                            <span class="material-icons">announcement</span> Anuncios
+                        </a></li>
+                    <li><a href="#reportes">
+                            <span class="material-icons">assessment</span> Reportes
+                        </a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenido principal del admin -->
+        <main class="admin-content">
+            <!-- Título de la página -->
+            <div class="page-title">
+                <h1>Resumen</h1>
+                <p style="color:var(--gris); font-size:14px;">Gestiona tu negocio desde aquí</p>
+            </div>
+
+            <!-- Tarjetas de estadísticas principales -->
+            <section class="stats-grid">
+                <div class="stat-card-error">
+                    <div>
+                        <p style="color: var(--error);">Error al cargar resumen</p>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+{% endblock %}
