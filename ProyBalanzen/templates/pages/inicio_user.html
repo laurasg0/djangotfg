@@ -35,7 +35,7 @@
     <main class="admin-content">
         <!-- Título de bienvenida -->
         <div class="page-title">
-            <h1>¡Hola, Laura! 👋</h1>
+            <h1>¡Hola, {{ request.user.nombre }}! 👋</h1>
             <p style="color:var(--gris); font-size:14px;">Bienvenida a tu panel personal</p>
         </div>
 
@@ -44,7 +44,7 @@
             <!-- Bono actual -->
             <div class="stat-card">
                 <div class="stat-icon" style="background-color:#E8F5E9;">
-                    <span class="material-icons" style="color:var(--success);">card_membership</span>
+                    <i class="material-icons" style="color:var(--success);">card_membership</i>
                 </div>
                 <div class="stat-info">
                     <h3>Mi Bono</h3>

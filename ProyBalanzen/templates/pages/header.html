@@ -1,18 +1,24 @@
 {% load static %}
 <header>
-      <a href="index.html" class="logo-nav">
-        <img
-          class="logo"
-          src="{% static 'assets/logos/logo_negro.svg' %}"
-          alt="Balanzen logo"
-        />
-      </a>
-      <nav class="header-nav">
-        <a href="index.html#cafe">Cafetería</a>
-        <a href="index.html#clases">Clases</a>
-        <a href="index.html#locales">Locales</a>
-        <a href="index.html#tienda">Tienda</a>
-        <button class="btn-login"><a id="btn-login" href="pages/login.html" >Iniciar sesión</a></button>
-        
-      </nav>
-    </header>
+  <a href="{% url 'home' %}" class="logo-nav">
+    <img class="logo" src="{% static 'assets/logos/logo_negro.svg' %}" alt="Balanzen logo" />
+  </a>
+  <nav class="header-nav">
+
+    {% if request.user.is_authenticated %}
+    <h3>{{ request.user.nombre }}</h3>
+    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+      {% csrf_token %}
+      <button class="btn-login" type="submit">Cerrar sesión</button>
+    </form>
+    {% else %}
+    <button class="btn-login">
+      <a href="index.html#cafe">Cafetería</a>
+      <a href="index.html#clases">Clases</a>
+      <a href="index.html#locales">Locales</a>
+      <a href="index.html#tienda">Tienda</a>
+      <a id="btn-login" href="{% url 'login' %}">Iniciar sesión</a>
+    </button>
+    {% endif %}
+  </nav>
+</header>

@@ -4,7 +4,7 @@ from .models import Usuario, SesionUsuario
 
 @admin.register(Usuario)
 class UsuarioAdmin(BaseUserAdmin):
-    list_display = ('username', 'email', 'nombre', 'apellidos', 'rol', 'nivel_membresia')  # Campos mostrados en la lista
+    list_display = ('pk', 'username', 'email', 'nombre', 'apellidos', 'rol', 'nivel_membresia')  # Campos mostrados en la lista
     list_filter = ('rol', 'nivel_membresia', 'genero')  # Filtros laterales
     search_fields = ('username', 'email', 'nombre', 'apellidos')  # Campos de búsqueda
     

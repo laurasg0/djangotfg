@@ -49,8 +49,9 @@
                     <span class="material-icons" style="color:var(--success);">people</span>
                 </div>
                 <div class="stat-info">
-                    <h3>Usuarios Activos</h3>
-                    <p class="stat-number">284</p>
+                    <h3>Usuarios Totales</h3>
+                    <!-- MOSTRAR USUARIOS TOTALES (desde la view de AdminView) -->
+                    <p class="stat-number">{{ total_usuarios }}</p>
                     <span class="stat-badge success">+12% este mes</span>
                 </div>
             </div>
@@ -60,8 +61,8 @@
                     <span class="material-icons" style="color:#F57C00;">event</span>
                 </div>
                 <div class="stat-info">
-                    <h3>Reservas Hoy</h3>
-                    <p class="stat-number">47</p>
+                    <h3>Reservas Totales</h3>
+                    <p class="stat-number">{{ reservas_totales }}</p>
                     <span class="stat-badge warning">8 pendientes</span>
                 </div>
             </div>
@@ -71,8 +72,8 @@
                     <span class="material-icons" style="color:#1976D2;">fitness_center</span>
                 </div>
                 <div class="stat-info">
-                    <h3>Clases Activas</h3>
-                    <p class="stat-number">18</p>
+                    <h3>Clases Programadas</h3>
+                    <p class="stat-number">{{ clases_programadas }}</p>
                     <span class="stat-badge info">6 instructores</span>
                 </div>
             </div>
@@ -168,6 +169,30 @@
                 </tbody>
             </table>
         </section>
+
+        <!-- Comunicación: Visualizar anuncios -->
+         <section class="content-section">
+            <div>
+                <p>Comunicación</p>
+                <h2>Últimos Anuncios</h2>
+                <div class="ads-card">
+                    <h2>Título Anuncio</h2>
+                    <p>Fecha</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta dolor voluptate labore quis aliquid non veniam laborum quasi, error atque molestiae voluptates nulla aspernatur id totam earum maxime! Corrupti, reiciendis!</p>
+                </div>
+                <div class="ads-card">
+                    <h2>Título Anuncio</h2>
+                    <p>Fecha</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta dolor voluptate labore quis aliquid non veniam laborum quasi, error atque molestiae voluptates nulla aspernatur id totam earum maxime! Corrupti, reiciendis!</p>
+                </div>
+                <div class="ads-card">
+                    <h2>Título Anuncio</h2>
+                    <p>Fecha</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta dolor voluptate labore quis aliquid non veniam laborum quasi, error atque molestiae voluptates nulla aspernatur id totam earum maxime! Corrupti, reiciendis!</p>
+                </div>
+            </div>
+
+         </section>
 
         <!-- Acciones rápidas -->
         <section class="quick-actions">
