@@ -1,8 +1,18 @@
 {% extends 'pages/base.html' %}
 
 {% block content %}
-<h1> Holaaaa esto es home.html </h1>
-<h3>Clases</h3>
+<h1> Bienvenido a Balanzen </h1>
+<h2> Tu espacio de bienestar</h2>
+
+<div>
+    <a href="{% url 'inicio_user' %}">
+        Usuario
+    </a>
+    <a href="{% url 'inicio_admin' %}">
+        Administrador
+    </a>
+</div>
+
 
 
 
