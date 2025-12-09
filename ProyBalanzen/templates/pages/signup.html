@@ -1,4 +1,3 @@
-
 {% extends 'pages/base.html' %}
 {% load static %
 
@@ -8,8 +7,35 @@
 
 <main>
       <div class="login-container">
-        <form class="login-box" action="">
-          <h2>Iniciar sesión</h2>
+        <form class="login-box" action="" method="POST">
+          <h2>Regístrate</h2>
+          <div class="input-container">
+            <i class="material-icons input-icon">person</i>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Usuario"
+            />
+          </div>
+          <div class="input-container">
+            <i class="material-icons input-icon">person</i>
+            <input
+              type="text"
+              name="firstname"
+              id="firstname"
+              placeholder="Nombre"
+            />
+          </div>
+          <div class="input-container">
+            <i class="material-icons input-icon">person</i>
+            <input
+              type="text"
+              name="lastname"
+              id="lastname"
+              placeholder="Apellidos"
+            />
+          </div>
           <div class="input-container">
             <i class="material-icons input-icon">email</i>
             <input
@@ -31,7 +57,7 @@
           </div>
           <button type="submit">Entrar</button>
           <div class="login-options">
-            <p>¿No tienes una cuenta? <a href="{% url 'signup' %}">Regístrate</a></p>
+            <p>¿Ya tienes cuenta? <a href="{% url 'login' %}">Iniciar sesión</a></p>
             <a href="{% url 'inicio_admin' %}">Admin</a>
             <a href="{% url 'inicio_user' %}">Usuario</a>
             <a href="{% url 'inicio_error' %}">Error</a>

@@ -12,11 +12,11 @@
       <button class="btn-login" type="submit">Cerrar sesión</button>
     </form>
     {% else %}
+    <a href="index.html#cafe">Cafetería</a>
+    <a href="index.html#clases">Clases</a>
+    <a href="index.html#locales">Locales</a>
+    <a href="index.html#tienda">Tienda</a>
     <button class="btn-login">
-      <a href="index.html#cafe">Cafetería</a>
-      <a href="index.html#clases">Clases</a>
-      <a href="index.html#locales">Locales</a>
-      <a href="index.html#tienda">Tienda</a>
       <a id="btn-login" href="{% url 'login' %}">Iniciar sesión</a>
     </button>
     {% endif %}

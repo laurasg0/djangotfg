@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView # Import para las vistas y Para CBV
 from django.views.generic import CreateView
@@ -19,6 +20,15 @@ class UserUpdateView(UpdateView):
     fields = ['username', 'nombre', 'email', 'password']
     success_url = reverse_lazy('home')
 
+# Función para la paginación
+def paginacion_view(request):
+    usuarios_list = Usuario.objects.all()
+    paginator = Paginator(usuarios_list, 10)  # Mostrar 10 usuarios por página
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'pages/prueba_paginacion.html', {'page_obj': page_obj})
+
 
 # VISTAS BASADAS EN CLASES (CBV)
 class HomeView(TemplateView):
@@ -26,6 +36,9 @@ class HomeView(TemplateView):
 
 class LoginView(TemplateView):
     template_name ='pages/login.html' # ruta al login
+
+class SignupView(TemplateView):
+    template_name = 'pages/signup.html' # ruta al registro de usuarios
 
 class AdminView(TemplateView):
     template_name = 'pages/inicio_admin.html' # ruta a la plantilla del admin
@@ -44,4 +57,7 @@ class UserView(TemplateView):
 
 class ErrorView(TemplateView):
     template_name = 'pages/inicio_error.html' # ruta a la plantilla de error
+
+class PaginacionView(TemplateView):
+    template_name = 'pages/prueba_paginacion.html' # PROBANDO PAGINACIÓN
 
