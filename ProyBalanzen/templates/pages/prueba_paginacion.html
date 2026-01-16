@@ -1,11 +1,24 @@
 {% extends 'pages/base.html' %}
-{% load static %
+{% load static %}
 
-}
 {% block content %}
-<div class="content-section">
-    {% for Usario in page_obj %}
-    <p>{{ Usario.username }} - {{ Usario.email }}</p>
+<div class="admin-content">
+<section class="content-section">
+    <div class="section-header">
+        <h2>Prueba de Paginación</h2>
+    </div>
+    {% for Usuario in page_obj %}
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-info">
+                <h2>{{ Usuario.nombre }}</h2>
+                <p>Id: {{ Usuario.id }}</p>
+                <p>Email: {{ Usuario.email }}</p>
+            </div>
+        </div>
+
+    </div>
+
     {% endfor %}
 
     <div class="pagination">
@@ -25,5 +38,6 @@
             {% endif %}
         </span>
     </div>
+</section>
 </div>
 {% endblock %}

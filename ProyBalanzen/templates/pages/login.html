@@ -8,15 +8,24 @@
 
 <main>
       <div class="login-container">
-        <form class="login-box" action="">
+        <form class="login-box" action="{% url 'login' %}" method="POST">
+          {% csrf_token %}
           <h2>Iniciar sesión</h2>
+          
+          {% if form.errors %}
+          <div style="color: var(--error); margin-bottom: 15px;">
+            <p>Credenciales incorrectas. Por favor, intenta de nuevo.</p>
+          </div>
+          {% endif %}
+          
           <div class="input-container">
             <i class="material-icons input-icon">email</i>
             <input
               type="email"
-              name="email"
-              id="email"
+              name="username"
+              id="username"
               placeholder="Correo electrónico"
+              required
             />
           </div>
 
@@ -24,9 +33,10 @@
             <i class="material-icons input-icon">lock</i>
             <input
               type="password"
-              name="clave"
-              id="clave"
+              name="password"
+              id="password"
               placeholder="Contraseña"
+              required
             />
           </div>
           <button type="submit">Entrar</button>
@@ -43,7 +53,7 @@
           <p>Tu espacio de bienestar y equilibrio.</p>
         </div>
       </div>
-    </main>
+</main>
 
 
 

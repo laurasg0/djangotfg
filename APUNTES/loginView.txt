@@ -1,0 +1,411 @@
+===============================================================================
+            GUÍA COMPLETA: VISTA DE LOGIN EN DJANGO
+===============================================================================
+
+ÍNDICE:
+1. Conceptos básicos del Login en Django
+2. MÉTODO 1: Formulario HTML manual
+3. MÉTODO 2: Formulario automático con Django Forms + Crispy
+4. Configuración adicional en settings.py
+5. Creación de usuarios de prueba
+6. Troubleshooting común
+
+===============================================================================
+1. CONCEPTOS BÁSICOS DEL LOGIN EN DJANGO
+===============================================================================
+
+¿QUÉ ES LoginView?
+-------------------
+Es una CBV (Class-Based View) que Django proporciona para manejar autenticación.
+Incluye automáticamente:
+  ✓ Formulario de autenticación (AuthenticationForm)
+  ✓ Validación de credenciales
+  ✓ Creación de sesión
+  ✓ Redirección tras login exitoso
+  ✓ Manejo de errores
+
+FLUJO DEL LOGIN:
+----------------
+1. Usuario accede a /login/ (GET request)
+2. Django muestra el formulario de login
+3. Usuario ingresa credenciales y envía (POST request)
+4. Django valida username/password contra la BD
+5. Si correcto → crea sesión y redirige a success_url
+6. Si incorrecto → muestra error en el formulario
+
+CAMPOS OBLIGATORIOS:
+--------------------
+Django espera siempre estos nombres en el formulario:
+  • name="username"  → aunque uses email, el campo se llama "username"
+  • name="password"  → la contraseña
+
+===============================================================================
+2. MÉTODO 1: FORMULARIO HTML MANUAL
+===============================================================================
+
+Este método te da control total sobre el diseño pero requiere más código HTML.
+
+PASO 1: Crear el Template (templates/pages/login.html)
+-------------------------------------------------------
+{% extends 'pages/base.html' %}
+{% load static %}
+
+{% block content %}
+<main>
+  <div class="login-container">
+    <form class="login-box" action="{% url 'login' %}" method="POST">
+      {% csrf_token %}
+      <h2>Iniciar sesión</h2>
+      
+      {# Mostrar errores si los hay #}
+      {% if form.errors %}
+      <div style="color: red; margin-bottom: 15px;">
+        <p>Credenciales incorrectas. Por favor, intenta de nuevo.</p>
+      </div>
+      {% endif %}
+      
+      {# Campo de email/username #}
+      <div class="input-container">
+        <i class="material-icons input-icon">email</i>
+        <input
+          type="email"
+          name="username"
+          id="username"
+          placeholder="Correo electrónico"
+          required
+        />
+      </div>
+
+      {# Campo de contraseña #}
+      <div class="input-container">
+        <i class="material-icons input-icon">lock</i>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Contraseña"
+          required
+        />
+      </div>
+      
+      <button type="submit">Entrar</button>
+      
+      <div class="login-options">
+        <p>¿No tienes una cuenta? <a href="{% url 'signup' %}">Regístrate</a></p>
+      </div>
+    </form>
+  </div>
+</main>
+{% endblock %}
+
+PASO 2: Crear la Vista (users/views.py)
+----------------------------------------
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
+
+class LoginFormView(LoginView):
+    template_name = 'pages/login.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Iniciar sesión'
+        return context
+    
+    # Redirigir según el rol del usuario
+    def get_success_url(self):
+        user = self.request.user
+        if user.rol == 'ADMIN' or user.rol == 'TRABAJADOR':
+            return reverse_lazy('inicio_admin')
+        else:
+            return reverse_lazy('inicio_user')
+
+PASO 3: Configurar URL (balanzen/urls.py)
+------------------------------------------
+from users import views as users_views
+
+urlpatterns = [
+    path('login/', users_views.LoginFormView.as_view(), name='login'),
+    path('logout/', users_views.LogoutFormView.as_view(), name='logout'),
+]
+
+VENTAJAS:
+---------
+✓ Control total del diseño
+✓ Puedes usar tus propios estilos CSS
+✓ Ideal para diseños personalizados
+
+DESVENTAJAS:
+------------
+✗ Más código HTML
+✗ Debes manejar manualmente los errores
+✗ No aprovecha la validación visual de Django
+
+
+===============================================================================
+3. MÉTODO 2: FORMULARIO AUTOMÁTICO CON DJANGO FORMS + CRISPY
+===============================================================================
+
+Este método usa el poder de Django Forms para generar el HTML automáticamente.
+
+PASO 1: Crear un Form personalizado (users/forms.py)
+-----------------------------------------------------
+from django import forms
+from django.contrib.auth.forms import AuthenticationForm
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout, Row, Column, Fieldset
+
+class CustomLoginForm(AuthenticationForm):
+    """
+    Formulario de login personalizado que extiende AuthenticationForm
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Personalizar labels y placeholders
+        self.fields['username'].label = 'Correo electrónico'
+        self.fields['username'].widget.attrs['placeholder'] = 'tu@email.com'
+        self.fields['password'].label = 'Contraseña'
+        self.fields['password'].widget.attrs['placeholder'] = 'Ingresa tu contraseña'
+        
+        # Configuración de Crispy Forms
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+        self.helper.form_class = 'login-form'
+        
+        # Layout del formulario
+        self.helper.layout = Layout(
+            Fieldset(
+                'Accede a tu cuenta',
+                Row(
+                    Column('username', css_class='col-12'),
+                ),
+                Row(
+                    Column('password', css_class='col-12'),
+                ),
+            ),
+            Submit('submit', 'Iniciar sesión', css_class='btn btn-primary w-100')
+        )
+
+PASO 2: Crear el Template simplificado (templates/users/login_crispy.html)
+---------------------------------------------------------------------------
+{% extends 'pages/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <h2 class="text-center mb-4">Iniciar sesión</h2>
+            
+            {# Crispy forms renderiza todo automáticamente #}
+            {% crispy form %}
+            
+            <div class="text-center mt-3">
+                <p>¿No tienes cuenta? <a href="{% url 'signup' %}">Regístrate aquí</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+PASO 3: Crear la Vista usando el form personalizado (users/views.py)
+---------------------------------------------------------------------
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
+from .forms import CustomLoginForm
+
+class LoginCrispyView(LoginView):
+    template_name = 'users/login_crispy.html'
+    form_class = CustomLoginForm  # Usar nuestro formulario personalizado
+    
+    def get_success_url(self):
+        user = self.request.user
+        if user.rol == 'ADMIN' or user.rol == 'TRABAJADOR':
+            return reverse_lazy('inicio_admin')
+        else:
+            return reverse_lazy('inicio_user')
+
+PASO 4: Configurar URL
+----------------------
+urlpatterns = [
+    path('login/', users_views.LoginCrispyView.as_view(), name='login'),
+]
+
+PASO 5: Asegurar que Crispy está configurado (settings.py)
+-----------------------------------------------------------
+INSTALLED_APPS = [
+    # ... otras apps
+    'crispy_forms',
+    'crispy_bootstrap5',
+]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+PASO 6: Cargar Bootstrap en base.html
+--------------------------------------
+<head>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Tu contenido -->
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+VENTAJAS:
+---------
+✓ Menos código HTML
+✓ Validación automática con mensajes de error
+✓ Diseño responsive con Bootstrap
+✓ Manejo automático de errores
+✓ Fácil de mantener y modificar
+
+DESVENTAJAS:
+------------
+✗ Menos control sobre el diseño exacto
+✗ Requiere conocer Bootstrap
+✗ Dependencia de librerías externas
+
+
+===============================================================================
+4. CONFIGURACIÓN ADICIONAL EN SETTINGS.PY
+===============================================================================
+
+Añade estas configuraciones al final de settings.py:
+
+# Configuración de autenticación
+LOGIN_REDIRECT_URL = 'inicio_user'  # Ruta por defecto tras login exitoso
+LOGOUT_REDIRECT_URL = 'home'        # Ruta tras cerrar sesión
+LOGIN_URL = 'login'                 # URL del login (para @login_required)
+
+# Si usas email como username
+AUTH_USER_MODEL = 'users.Usuario'  # Tu modelo personalizado
+
+
+===============================================================================
+5. CREACIÓN DE USUARIOS DE PRUEBA
+===============================================================================
+
+OPCIÓN A: Desde el shell de Django
+-----------------------------------
+python manage.py shell
+
+>>> from users.models import Usuario
+>>> user = Usuario.objects.create_user(
+...     email='cliente@test.com',
+...     nombre='Juan',
+...     apellidos='Pérez',
+...     password='1234',
+...     rol='CLIENTE'
+... )
+>>> print(f"Usuario creado: {user.email}")
+
+OPCIÓN B: Crear superusuario
+-----------------------------
+python manage.py createsuperuser
+# Te pedirá email y contraseña
+
+OPCIÓN C: Desde el Admin de Django
+-----------------------------------
+1. Accede a http://localhost:8000/admin/
+2. Login con tu superusuario
+3. Ve a "Usuarios" > "Agregar usuario"
+4. Completa los campos y guarda
+
+
+===============================================================================
+6. TROUBLESHOOTING COMÚN
+===============================================================================
+
+PROBLEMA 1: "Import could not be resolved" en forms.py
+-------------------------------------------------------
+CAUSA: El entorno virtual local no tiene instaladas las dependencias.
+SOLUCIÓN:
+  pip install crispy-bootstrap5 django-crispy-forms
+
+
+PROBLEMA 2: El formulario no muestra estilos de Bootstrap
+----------------------------------------------------------
+CAUSA: Falta cargar Bootstrap en base.html.
+SOLUCIÓN: Añadir el CDN de Bootstrap en <head>:
+  <link href="https://cdn.../bootstrap.min.css" rel="stylesheet">
+
+
+PROBLEMA 3: "Login failed" aunque las credenciales son correctas
+-----------------------------------------------------------------
+CAUSA: Los nombres de los campos no coinciden.
+SOLUCIÓN: Asegúrate que el form usa name="username" y name="password"
+
+
+PROBLEMA 4: El template no encuentra {% load crispy_forms_tags %}
+------------------------------------------------------------------
+CAUSA: crispy_forms no está en INSTALLED_APPS.
+SOLUCIÓN: Añadir en settings.py:
+  INSTALLED_APPS = [
+      'crispy_forms',
+      'crispy_bootstrap5',
+  ]
+
+
+PROBLEMA 5: Después del login, redirige a /accounts/profile/
+-------------------------------------------------------------
+CAUSA: No has configurado LOGIN_REDIRECT_URL en settings.py.
+SOLUCIÓN: Añadir en settings.py:
+  LOGIN_REDIRECT_URL = 'home'  # o la URL que quieras
+
+
+PROBLEMA 6: El footer se ve al lado del formulario
+---------------------------------------------------
+CAUSA: Conflicto entre tu CSS y Bootstrap.
+SOLUCIÓN: En base.html usar flexbox:
+  <body class="d-flex flex-column min-vh-100">
+      <header>...</header>
+      <main class="flex-grow-1">{% block content %}{% endblock %}</main>
+      <footer>...</footer>
+  </body>
+
+
+===============================================================================
+COMPARACIÓN FINAL: ¿CUÁL MÉTODO USAR?
+===============================================================================
+
+USA FORMULARIO MANUAL cuando:
+  • Tienes un diseño muy específico
+  • Ya tienes todo el CSS personalizado
+  • No quieres depender de Bootstrap
+  • Prefieres control total sobre el HTML
+
+USA FORMULARIO AUTOMÁTICO (CRISPY) cuando:
+  • Quieres desarrollo rápido
+  • Usas Bootstrap en tu proyecto
+  • Necesitas formularios complejos con validación
+  • Prefieres menos código y más mantenibilidad
+
+===============================================================================
+RECURSOS ADICIONALES
+===============================================================================
+
+Documentación oficial:
+  • LoginView: https://docs.djangoproject.com/en/5.2/topics/auth/default/#django.contrib.auth.views.LoginView
+  • AuthenticationForm: https://docs.djangoproject.com/en/5.2/topics/auth/default/#django.contrib.auth.forms.AuthenticationForm
+  • Crispy Forms: https://django-crispy-forms.readthedocs.io/
+
+Decoradores útiles:
+  • @login_required: Protege vistas que requieren autenticación
+  • @user_passes_test: Valida condiciones personalizadas
+
+Ejemplo de proteger una vista:
+  from django.contrib.auth.decorators import login_required
+  
+  @login_required
+  def mi_vista(request):
+      # Solo usuarios autenticados pueden acceder
+      return render(request, 'mi_template.html')
+
+===============================================================================
+FIN DEL DOCUMENTO
+===============================================================================

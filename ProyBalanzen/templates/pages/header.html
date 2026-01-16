@@ -5,19 +5,19 @@
   </a>
   <nav class="header-nav">
 
-    {% if request.user.is_authenticated %}
-    <h3>{{ request.user.nombre }}</h3>
-    <form action="{% url 'logout' %}" method="post" style="display:inline;">
-      {% csrf_token %}
-      <button class="btn-login" type="submit">Cerrar sesión</button>
-    </form>
-    {% else %}
-    <a href="index.html#cafe">Cafetería</a>
-    <a href="index.html#clases">Clases</a>
-    <a href="index.html#locales">Locales</a>
-    <a href="index.html#tienda">Tienda</a>
+    {% if not request.user.is_authenticated %}
     <button class="btn-login">
       <a id="btn-login" href="{% url 'login' %}">Iniciar sesión</a>
+    </button>
+    <button class="btn-login">
+    <a id="btn-login" href="{% url 'signup' %}">Regístrate</a>
+    </button>
+    {% else %}
+    <h3>Bienvenidx, {{ request.user.nombre }}!</h3>
+    
+    <button class="btn-login">
+      {% csrf_token %}
+      <a href="{% url 'logout' %}" id="btn-login" type="submit">Cerrar sesión</a>
     </button>
     {% endif %}
   </nav>

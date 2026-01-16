@@ -1,10 +1,30 @@
+{% extends '../pages/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
 
+{% block content %}
+
+<!-- <script>
+    let usuarios_js = [
+        {% for usuario in usuarios %}
+    <p class="user">{{ usuario.username }} - {{ usuario.email }}</p>
+    {% endfor %}
+    ];
+</script> -->
+
+<script>
+    for (let a of usuarios) {
+        let usuarios_js = document.createElement('p');
+        usuarios_js.textContent = `Usuario: ${a.username} - Email: ${a.email}`;
+        document.body.appendChild(usuarios_js);
+    }
+</script>
 
 <div class="container">
-    <h2>Creación de un nuevo proyecto</h2>
-    <form method="post" enctype="multipart/form-data">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Guardar">
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
 </div>
-
+{% endblock %}

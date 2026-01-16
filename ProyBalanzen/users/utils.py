@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from users.models import Usuario
+from .models import Usuario
 
 # función que devuelve todos los usuarios
 def get_users_all():

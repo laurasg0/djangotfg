@@ -1,0 +1,45 @@
+# Formulario con crispy (bootstrap 5)
+
+    1. pip install django-crispy-forms
+
+    2. pip install crispy-bootstrap5
+
+    3. Añadir a settings.py:
+
+        INSTALLED_APPS = [
+            ...
+            'crispy_forms',
+            'crispy_bootstrap5',
+            ...
+        ]
+
+        CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+        CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+    4. En el template de los formularios:
+
+        {% load crispy_forms_tags %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+
+    5. En views.py, usar el formulario como de costumbre.
+
+    6. Para personalizar el layout del formulario (en forms.py), usar:
+
+        from crispy_forms.helper import FormHelper
+        from crispy_forms.layout import Layout, Field, Submit
+        class MiFormulario(forms.Form):
+            nombre = forms.CharField(max_length=100)
+            email = forms.EmailField()
+
+            def __init__(self, *args, **kwargs):
+                super(MiFormulario, self).__init__(*args, **kwargs)
+                self.helper = FormHelper()
+                self.helper.layout = Layout(
+                    Field('nombre', css_class='form-control'),
+                    Field('email', css_class='form-control'),
+                    Submit('submit', 'Enviar', css_class='btn btn-primary')
+                )
