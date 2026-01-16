@@ -34,6 +34,7 @@ urlpatterns = [
     path('inicio_error/', common_views.ErrorView.as_view(), name='inicio_error'),
     path('create/', users_views.UserCreateView.as_view(), name='crear'),
     path('update/<int:pk>/', users_views.UserUpdateView.as_view(), name='editar'), # Vista de formulario de usuario
+    path('delete/<int:pk>/', users_views.UserDeleteView.as_view(), name='eliminar'), # Vista para eliminar usuario
     path('paginacion/', users_views.paginacion_view, name='paginacion'),
     
     

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.core.paginator import Paginator
 from django.urls import reverse_lazy
@@ -14,6 +14,11 @@ class UserCreateView(CreateView):
     model = Usuario # Modelo asociado
     fields = ['nombre', 'apellidos', 'email', 'password', 'telefono', 'fecha_nacimiento'] # Campos a mostrar en el formulario
     success_url = reverse_lazy('home') # URL de redirección tras el éxito
+    def form_valid(self, form):
+        usuario = form.save(commit=False)
+        usuario.set_password(form.cleaned_data['password'])  # Hashear la contraseña
+        usuario.save()
+        return super().form_valid(form)
     # sobreescribimos el metodo para mandar más datos guardados en context y lo devolvemos
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -25,7 +30,24 @@ class UserUpdateView(UpdateView):
     model = Usuario
     fields = ['nombre', 'apellidos', 'email', 'password', 'telefono', 'fecha_nacimiento']
     
+    def form_valid(self, form):
+        usuario = form.save(commit=False)
+        usuario.set_password(form.cleaned_data['password'])  # Hashear la contraseña
+        usuario.save()
+        return super().form_valid(form)
+    success_url = reverse_lazy('paginacion') # Redirigir a la vista de paginación tras actualizar
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Editar usuario'
+        return context
+
+# Eliminación de usuario
+class UserDeleteView(DeleteView):
+    model = Usuario
+    success_url = reverse_lazy('paginacion') # Redirigir a la vista de paginación tras eliminar
+
+# LOGIN Y LOGOUT
 class LoginFormView(LoginView):
     template_name = 'pages/login.html'
     
@@ -59,8 +81,6 @@ def paginacion_view(request):
 class PaginacionView(TemplateView):
     template_name = 'pages/prueba_paginacion.html' # PROBANDO PAGINACIÓN
 
-# class LoginView(TemplateView):
-#     template_name ='pages/login.html' # ruta al login
 
 class SignupView(TemplateView):
     template_name = 'pages/signup.html' # ruta al registro de usuarios

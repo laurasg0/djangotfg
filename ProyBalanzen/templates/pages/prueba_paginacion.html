@@ -16,7 +16,12 @@
                 <p>Email: {{ Usuario.email }}</p>
             </div>
         </div>
-
+        <!-- <button class="btn btn-primary">
+            <a href="{% url 'editar' Usuario.id %}" style="color: white; text-decoration: none;">Editar</a>
+        </button>
+        <button class="btn btn-danger">
+            <a href="{% url 'eliminar' Usuario.id %}" style="color: white; text-decoration: none;">Eliminar</a>
+        </button> -->
     </div>
 
     {% endfor %}
