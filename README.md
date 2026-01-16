@@ -39,5 +39,8 @@ docker-compose exec web python manage.py makemigrations
 
 docker-compose exec web python manage.py migrate
 
+# recoger las static files
+docker-compose exec web python manage.py collectstatic --noinput
+
 # 6. Crea el superusuario
 docker-compose exec web python manage.py createsuperuser
